@@ -9,6 +9,8 @@ class Node {
 class BinarySearchTree {
     constructor() {
         this.root = null
+        this.encontrado = false
+        this.recorrido = []
     }
 
     insert(value) {
@@ -85,13 +87,14 @@ class BinarySearchTree {
     dibujarEstructuraTree(nodeTemporal, nodoIzquierda, nodoDerecha) {
         //padre
         let padre = document.createElement('li')
-        padre.setAttribute('data-indice', `${nodeTemporal.value}`)
         //indice
         let div = document.createElement('span')
         div.className = 'nodo-wrapper'
 
         let indice = document.createElement('div')
         indice.className = 'nodo-circulo nodo-azul'
+        indice.setAttribute('data-indice', `${nodeTemporal.value}`)
+
         indice.textContent = nodeTemporal.value
 
         //hijos
@@ -118,21 +121,73 @@ class BinarySearchTree {
         return padre
     }
 
-    inOrder(value) {
+    inOrder(indice = this.root, value) {
         let valor = value
-        let currentNode = this.root
-        let arreglo = []
-        let anterior = []
-        let banderita = true
+        let indiceTemporal = indice
+
+        if (this.encontrado == true) {
+            return this
+        }
+
+        if (indiceTemporal.left != null) {
+            this.inOrder(indiceTemporal.left, value)
+        } else {
+            this.buscarIndice(indiceTemporal.value, value)
+
+        }
+
+        if (indiceTemporal.left != null || indiceTemporal.right != null) {
+            this.buscarIndice(indiceTemporal.value, value)
+
+
+        }
+
+        if (indiceTemporal.right != null) {
+            this.inOrder(indiceTemporal.right, value)
+        } else {
+            this.buscarIndice(indiceTemporal.value, value)
+
+        }
 
     }
 
 
+    buscarIndice(dataID, value) {
+        //aqui hace el cambio de color
+        //let tiempo = 500
+
+        posiciones.forEach(indice => {
+
+            if (indice.textContent == dataID) {
+                console.log('Recorrido: ', indice.textContent)
+                indice.className = 'nodo-circulo nodo-verde'
+
+                !this.recorrido.includes(indice.textContent) ? this.recorrido.push(indice.textContent) : this.recorrido
+
+                if (indice.textContent == value) {
+
+                    console.log('Encontre valor busqueda: ', indice.textContent)
+                    //setTimeout(() => {
+                    indice.className = 'nodo-circulo nodo-objetivo'
+
+                    //}, tiempo)
+
+
+                    this.encontrado = true
+
+                }
+            }
+
+            console.log(indice.textContent)
+        })
+        return this.encontrado
+
+
+    }
 
 }
 
 //Variables
-
 let inputIngreso = document.querySelector('#inputIngreso')
 let btnGuardar = document.querySelector('#guardar')
 let arbol = document.querySelector('.arbol')
@@ -140,8 +195,10 @@ let posiciones
 
 let btnBuscar = document.querySelector('#buscar')
 let inputBuscar = document.querySelector('#inputBuscar')
+let contenedorRecorrido = document.querySelector('.resultado-box')
 
 const Tree = new BinarySearchTree()
+
 
 btnGuardar.addEventListener('click', (event) => {
     Tree.insert(Number(inputIngreso.value))
@@ -151,10 +208,11 @@ btnGuardar.addEventListener('click', (event) => {
 })
 
 btnBuscar.addEventListener('click', (event) => {
+
     btnGuardar.disabled = true
 
-    console.log(Tree.inOrder(Number(inputBuscar.value)))
-
+    console.log(Tree.inOrder(undefined, Number(inputBuscar.value)))
+    contenedorRecorrido.textContent = Tree.recorrido.join(' ')
 
 })
 
