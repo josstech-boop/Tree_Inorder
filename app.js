@@ -16,7 +16,7 @@ class BinarySearchTree {
         if (this.root === null) {
             this.root = newNode
             arbol.innerHTML = ''
-            this.pintar(this.root)
+            this.buscarNode(this.root)
         } else {
             let currentNode = this.root
 
@@ -25,7 +25,7 @@ class BinarySearchTree {
                     if (!currentNode.left) {
                         currentNode.left = newNode
                         arbol.innerHTML = ''
-                        this.pintar(this.root)
+                        this.buscarNode(this.root)
                         return this
                     }
                     currentNode = currentNode.left
@@ -33,7 +33,7 @@ class BinarySearchTree {
                     if (!currentNode.right) {
                         currentNode.right = newNode
                         arbol.innerHTML = ''
-                        this.pintar(this.root)
+                        this.buscarNode(this.root)
                         return this
                     }
                     currentNode = currentNode.right
@@ -60,24 +60,29 @@ class BinarySearchTree {
         }
     }
 
-    pintar(node) {
+    buscarNode(node) {
         //varible temporal
         let nodeTemporal = node
         let nodoIzquierda;
         let nodoDerecha;
 
         if (nodeTemporal.left != null) {
-            nodoIzquierda = this.pintar(nodeTemporal.left)
+            nodoIzquierda = this.buscarNode(nodeTemporal.left)
         }
 
         if (nodeTemporal.right != null) {
-            nodoDerecha = this.pintar(nodeTemporal.right)
+            nodoDerecha = this.buscarNode(nodeTemporal.right)
         }
 
         if (nodeTemporal.left == null && nodeTemporal.right == null) {
             nodoIzquierda = ''
             nodoDerecha = ''
         }
+        let indice = this.dibujarEstructuraTree(nodeTemporal, nodoIzquierda, nodoDerecha)
+        return indice
+    }
+
+    dibujarEstructuraTree(nodeTemporal, nodoIzquierda, nodoDerecha) {
         //padre
         let padre = document.createElement('li')
         padre.setAttribute('data-indice', `${nodeTemporal.value}`)
@@ -96,7 +101,6 @@ class BinarySearchTree {
         let right = document.createElement('li')
         right.className = 'derecha'
 
-
         if (nodeTemporal.left != null) {
             left.append(nodoIzquierda)
         }
@@ -113,6 +117,17 @@ class BinarySearchTree {
 
         return padre
     }
+
+    inOrder(value) {
+        let valor = value
+        let currentNode = this.root
+        let arreglo = []
+        let anterior = []
+        let banderita = true
+
+    }
+
+
 
 }
 
@@ -137,7 +152,10 @@ btnGuardar.addEventListener('click', (event) => {
 
 btnBuscar.addEventListener('click', (event) => {
     btnGuardar.disabled = true
-    console.log(inputBuscar.value)
+
+    console.log(Tree.inOrder(Number(inputBuscar.value)))
+
+
 })
 
 
