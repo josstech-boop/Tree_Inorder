@@ -25,9 +25,9 @@
                     <div class="mb-4">
                         <label class="form-label text-light fw-semibold">Ingresar nodo:</label>
                         <div class="input-group">
-                            <input type="text" class="form-control bg-dark text-white border-secondary"
-                                placeholder="Ej. A, B...">
-                            <button class="btn btn-info text-dark fw-bold px-3">Guardar</button>
+                            <input id="inputIngreso" type="number"
+                                class="form-control bg-dark text-white border-secondary" placeholder="Ej. 1, 2, 3...">
+                            <button id="guardar" class="btn btn-info text-dark fw-bold px-3">Guardar</button>
                         </div>
                     </div>
 
@@ -36,11 +36,11 @@
                     <div class="mb-4">
                         <label class="form-label text-light fw-semibold">Buscar por InOrden:</label>
                         <input type="text" class="form-control bg-dark text-white border-secondary mb-3"
-                            placeholder="Ej. F" value="F">
+                            placeholder="Ej. F">
 
                         <div class="d-flex gap-2 justify-content-end">
-                            <button class="btn btn-outline-secondary px-3">Limpiar</button>
-                            <button class="btn btn-success fw-bold px-4">Buscar</button>
+                            <button id="limpiar" class="btn btn-outline-secondary px-3">Limpiar</button>
+                            <button id="buscar" class="btn btn-success fw-bold px-4">Buscar</button>
                         </div>
                     </div>
                 </div>
@@ -53,7 +53,7 @@
                     <div class="canvas-arbol">
 
                         <ul class="arbol">
-                            <li>
+                            <!-- <li>
                                 <div class="nodo-wrapper">
                                     <div class="nodo-circulo nodo-azul">A</div>
                                 </div>
@@ -71,8 +71,9 @@
                                             </li>
                                             <li>
                                                 <div class="nodo-wrapper">
-                                                    <div class="nodo-circulo nodo-rojo">E</div>
+                                                    <div class="nodo-circulo nodo-rojo ">E</div>
                                                 </div>
+
                                             </li>
                                         </ul>
                                     </li>
@@ -95,7 +96,7 @@
                                         </ul>
                                     </li>
                                 </ul>
-                            </li>
+                            </li> -->
                         </ul>
 
                     </div>
@@ -112,6 +113,7 @@
     </div>
 
     <script src="./bootstrap-5.3.8-dist/js/bootstrap.min.js"></script>
+    <script src="./app.js"></script>
 
 </body>
 
