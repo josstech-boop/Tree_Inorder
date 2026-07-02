@@ -145,6 +145,8 @@ class BinarySearchTree {
 
         }
 
+        return this.encontrado
+
     }
 
 
@@ -228,7 +230,17 @@ btnBuscar.addEventListener('click', (event) => {
         btnBuscar.disabled = true
         btnLimpiar.disabled = false
         inputBuscar.value = ''
-        contenedorRecorrido.textContent = Tree.recorrido.join(' ')
+
+        setTimeout(() => {
+            if (!Tree.encontrado) {
+                contenedorRecorrido.textContent = 'No existe el nodo que busca'
+            } else {
+                contenedorRecorrido.textContent = Tree.recorrido.join(' ')
+            }
+        }, Tree.tiempo)
+
+
+
     }
 
 })
