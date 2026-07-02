@@ -11,13 +11,16 @@ class BinarySearchTree {
         this.root = null
         this.encontrado = false
         this.recorrido = []
+        this.tiempo = 1000
     }
 
     insert(value) {
+
         let newNode = new Node(value)
+        arbol.innerHTML = ''
+
         if (this.root === null) {
             this.root = newNode
-            arbol.innerHTML = ''
             this.buscarNode(this.root)
         } else {
             let currentNode = this.root
@@ -26,7 +29,6 @@ class BinarySearchTree {
                 if (value < currentNode.value) {
                     if (!currentNode.left) {
                         currentNode.left = newNode
-                        arbol.innerHTML = ''
                         this.buscarNode(this.root)
                         return this
                     }
@@ -34,7 +36,6 @@ class BinarySearchTree {
                 } else {
                     if (!currentNode.right) {
                         currentNode.right = newNode
-                        arbol.innerHTML = ''
                         this.buscarNode(this.root)
                         return this
                     }
@@ -63,7 +64,6 @@ class BinarySearchTree {
     }
 
     buscarNode(node) {
-        //varible temporal
         let nodeTemporal = node
         let nodoIzquierda;
         let nodoDerecha;
@@ -122,24 +122,20 @@ class BinarySearchTree {
     }
 
     inOrder(indice = this.root, value) {
-        let valor = value
         let indiceTemporal = indice
 
-        if (this.encontrado == true) {
-            return this
-        }
+        // if (this.encontrado == true) {
+        //     return this
+        // }
 
         if (indiceTemporal.left != null) {
             this.inOrder(indiceTemporal.left, value)
         } else {
             this.buscarIndice(indiceTemporal.value, value)
-
         }
 
         if (indiceTemporal.left != null || indiceTemporal.right != null) {
             this.buscarIndice(indiceTemporal.value, value)
-
-
         }
 
         if (indiceTemporal.right != null) {
@@ -152,37 +148,49 @@ class BinarySearchTree {
     }
 
 
-    buscarIndice(dataID, value) {
+    buscarIndice(indiceTemporal, value) {
         //aqui hace el cambio de color
-        //let tiempo = 500
-
         posiciones.forEach(indice => {
+            if (this.encontrado != true) {
+                if (indice.textContent == indiceTemporal) {
 
-            if (indice.textContent == dataID) {
-                console.log('Recorrido: ', indice.textContent)
-                indice.className = 'nodo-circulo nodo-verde'
+                    this.animacionPintar(indice)
 
-                !this.recorrido.includes(indice.textContent) ? this.recorrido.push(indice.textContent) : this.recorrido
+                    !this.recorrido.includes(indice.textContent) ? this.recorrido.push(indice.textContent) : this.recorrido
 
-                if (indice.textContent == value) {
+                    if (indice.textContent == value) {
+                        setTimeout(() => {
+                            indice.className = 'nodo-circulo nodo-objetivo'
+                        }, this.tiempo - 900)
 
-                    console.log('Encontre valor busqueda: ', indice.textContent)
-                    //setTimeout(() => {
-                    indice.className = 'nodo-circulo nodo-objetivo'
+                        this.encontrado = true
 
-                    //}, tiempo)
-
-
-                    this.encontrado = true
-
+                    }
                 }
             }
 
-            console.log(indice.textContent)
         })
         return this.encontrado
+    }
+
+    animacionPintar(indice) {
+
+        setTimeout(() => {
+            indice.className = 'nodo-circulo nodo-verde'
 
 
+        }, this.tiempo)
+        this.tiempo += 1000
+    }
+
+    limpiar() {
+
+        arbol.innerHTML = ''
+        this.buscarNode(this.root)
+        this.encontrado = false
+        this.recorrido = []
+        this.tiempo = 1000
+        contenedorRecorrido.textContent = ''
     }
 
 }
@@ -197,6 +205,8 @@ let btnBuscar = document.querySelector('#buscar')
 let inputBuscar = document.querySelector('#inputBuscar')
 let contenedorRecorrido = document.querySelector('.resultado-box')
 
+let btnLimpiar = document.querySelector('#limpiar')
+
 const Tree = new BinarySearchTree()
 
 
@@ -204,15 +214,31 @@ btnGuardar.addEventListener('click', (event) => {
     Tree.insert(Number(inputIngreso.value))
     inputIngreso.value = ''
     posiciones = document.querySelectorAll('[data-indice]')
+    btnBuscar.disabled = false
 
 })
 
 btnBuscar.addEventListener('click', (event) => {
 
-    btnGuardar.disabled = true
+    if (inputBuscar.value == '') {
+        alert('Coloque un numero')
+    } else {
+        Tree.inOrder(undefined, Number(inputBuscar.value))
+        btnGuardar.disabled = true
+        btnBuscar.disabled = true
+        btnLimpiar.disabled = false
+        inputBuscar.value = ''
+        contenedorRecorrido.textContent = Tree.recorrido.join(' ')
+    }
 
-    console.log(Tree.inOrder(undefined, Number(inputBuscar.value)))
-    contenedorRecorrido.textContent = Tree.recorrido.join(' ')
+})
+
+btnLimpiar.addEventListener('click', (event) => {
+    Tree.limpiar()
+    posiciones = document.querySelectorAll('[data-indice]')
+    btnGuardar.disabled = false
+    btnLimpiar.disabled = true
+    btnBuscar.disabled = false
 
 })
 
