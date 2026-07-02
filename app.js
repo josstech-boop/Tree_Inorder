@@ -11,6 +11,7 @@ class BinarySearchTree {
         this.root = null
         this.encontrado = false
         this.recorrido = []
+        this.tiempo = 1000
     }
 
     insert(value) {
@@ -28,7 +29,6 @@ class BinarySearchTree {
                 if (value < currentNode.value) {
                     if (!currentNode.left) {
                         currentNode.left = newNode
-                        // arbol.innerHTML = ''
                         this.buscarNode(this.root)
                         return this
                     }
@@ -36,7 +36,6 @@ class BinarySearchTree {
                 } else {
                     if (!currentNode.right) {
                         currentNode.right = newNode
-                        // arbol.innerHTML = ''
                         this.buscarNode(this.root)
                         return this
                     }
@@ -65,7 +64,6 @@ class BinarySearchTree {
     }
 
     buscarNode(node) {
-        //varible temporal
         let nodeTemporal = node
         let nodoIzquierda;
         let nodoDerecha;
@@ -150,36 +148,20 @@ class BinarySearchTree {
     }
 
 
-    buscarIndice(dataID, value) {
+    buscarIndice(indiceTemporal, value) {
         //aqui hace el cambio de color
-        let tiempo = 0
-
         posiciones.forEach(indice => {
-            tiempo += 1000
             if (this.encontrado != true) {
+                if (indice.textContent == indiceTemporal) {
 
-
-                if (indice.textContent == dataID) {
-
-
-
-                    console.log('Recorrido: ', indice.textContent)
-                    setTimeout(() => {
-                        indice.className = 'nodo-circulo nodo-verde'
-
-                    }, tiempo)
-
+                    this.animacionPintar(indice)
 
                     !this.recorrido.includes(indice.textContent) ? this.recorrido.push(indice.textContent) : this.recorrido
 
                     if (indice.textContent == value) {
-
-                        console.log('Encontre valor busqueda: ', indice.textContent)
                         setTimeout(() => {
                             indice.className = 'nodo-circulo nodo-objetivo'
-
-                        }, tiempo)
-
+                        }, this.tiempo - 900)
 
                         this.encontrado = true
 
@@ -187,11 +169,18 @@ class BinarySearchTree {
                 }
             }
 
-            console.log(indice.textContent)
         })
-
-        tiempo = 0
         return this.encontrado
+    }
+
+    animacionPintar(indice) {
+
+        setTimeout(() => {
+            indice.className = 'nodo-circulo nodo-verde'
+
+
+        }, this.tiempo)
+        this.tiempo += 1000
     }
 
     limpiar() {
@@ -200,7 +189,8 @@ class BinarySearchTree {
         this.buscarNode(this.root)
         this.encontrado = false
         this.recorrido = []
-
+        this.tiempo = 1000
+        contenedorRecorrido.textContent = ''
     }
 
 }
@@ -220,7 +210,6 @@ let btnLimpiar = document.querySelector('#limpiar')
 
 const Tree = new BinarySearchTree()
 
-
 btnGuardar.addEventListener('click', (event) => {
     Tree.insert(Number(inputIngreso.value))
     inputIngreso.value = ''
@@ -231,13 +220,16 @@ btnGuardar.addEventListener('click', (event) => {
 
 btnBuscar.addEventListener('click', (event) => {
 
-    Tree.inOrder(undefined, Number(inputBuscar.value))
-
-    btnGuardar.disabled = true
-    btnBuscar.disabled = true
-    btnLimpiar.disabled = false
-    inputBuscar.value = ''
-    contenedorRecorrido.textContent = Tree.recorrido.join(' ')
+    if (inputBuscar.value == '') {
+        alert('Coloque un numero')
+    } else {
+        Tree.inOrder(undefined, Number(inputBuscar.value))
+        btnGuardar.disabled = true
+        btnBuscar.disabled = true
+        btnLimpiar.disabled = false
+        inputBuscar.value = ''
+        contenedorRecorrido.textContent = Tree.recorrido.join(' ')
+    }
 
 })
 
