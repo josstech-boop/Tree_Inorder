@@ -9,4 +9,3 @@
 - 🧹 Opción para limpiar y restaurar el árbol.
 - 🏛️ Implementado con Programación Orientada a Objetos (POO).
 
-- file:///home/pc-05/Im%C3%A1genes/Capturas%20de%20pantalla/Captura%20desde%202026-07-02%2009-08-49.png
